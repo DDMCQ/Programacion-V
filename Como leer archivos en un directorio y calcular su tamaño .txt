@@ -1,0 +1,19 @@
+Imports System.IO
+
+Module Program
+    Sub Main(args As String())
+        Dim Directory = "C:\visual"
+        Dim files() As System.IO.FileInfo
+        Dim Dirinfo As New System.IO.DirectoryInfo(Directory)
+        files = Dirinfo.GetFiles("*", IO.SearchOption.AllDirectories)
+        For Each file In files
+            Console.WriteLine(file)
+            Dim size As Long = file.Length
+
+            Console.WriteLine("Tamaño de Archivo en Bytes: {0}", size)
+
+        Next
+        Console.ReadKey(True)
+
+    End Sub
+End Module

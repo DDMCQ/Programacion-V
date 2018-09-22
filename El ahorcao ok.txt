@@ -1,0 +1,231 @@
+Option Strict On 'Restringe las conversiones de tipos de datos implícitas a solo conversiones de ampliación, impide el enlace en tiempo de ejecución y deniega el uso de tipos implícitos que dan como resultado un tipo Object.
+Option Explicit On 'Fuerza la declaración explícita de todas las variables de un archivo, o permite declaraciones implícitas de variables.
+Module Module1
+
+
+    Sub Main()
+
+        Do Until True = False
+            Dim palabrasecreta As String
+            Dim letra As New Hangman
+            Console.WriteLine("Ingresa la palabra secreta:  ")
+            palabrasecreta = Console.ReadLine()
+            letra.Text = palabrasecreta
+            Do Until letra.ShowRightLeg = True OrElse letra.GetWord.Contains("_") = False 'si te equivocas mostrar la pierna izquierda
+                Console.WriteLine(letra.Draw) 'dibuja cuando te equivocas
+                Console.WriteLine()
+                Console.WriteLine(letra.GetWord)
+                Console.WriteLine()
+                Console.Write("Por favor ingresa una letra: ") 'se pide la letra que uno cree que es correcta
+
+                Dim respuesta As String = Console.ReadLine 'lee la letra que acabas de poner 
+
+                If respuesta.Length > 1 OrElse respuesta.Length = 0 Then 'Si la palabra es mayor a uno, continuar 
+                    Console.WriteLine("Por favor solo ingresar letras.")
+                Else
+                    'SI LETRA.REPETIDA.ESTACONTENIDA(EN RESPUESTA) ENTONCES 
+                    If letra.GuessedLetters.Contains(respuesta) Then
+                        Console.WriteLine("Letra repetida... " & respuesta)
+                        Console.WriteLine("Preciona una tecla para continuar...")
+                        Console.ReadLine()
+
+                    Else 'DE LO CONTRARIO
+                        Dim isstrike As Boolean = False 'Boolean Sólo admite 2 valores: TRUE o FALSE
+                        For i As Integer = 0 To letra.Text.Length - 1
+                            If letra.Text.Substring(i, 1) = respuesta Then
+                                isstrike = False
+                                Exit For
+                            Else
+                                isstrike = True
+                            End If
+                        Next
+
+                        If isstrike = True Then
+                            letra.Strike()
+                        End If
+
+                        letra.GuessedLetters.Add(respuesta)
+                    End If
+
+                    If letra.ShowRightLeg = True Then
+                        Console.WriteLine(letra.Draw)
+                        Console.WriteLine()
+                        Console.WriteLine("Lo siento, has perdido.....la respuesta era: " & palabrasecreta)
+                        Console.WriteLine("Presiona una tecla para continuar...")
+                        Console.ReadLine()
+                    ElseIf letra.GetWord.Contains("_") = False Then
+                        Console.WriteLine(letra.GetWord)
+                        Console.WriteLine()
+                        Console.WriteLine("Tu respuesta es correcta, tu ganas!!!!")
+                        Console.WriteLine("Presiona un tecla para continuar...")
+                        Console.ReadLine()
+                    End If
+                End If
+
+                Console.Clear()
+            Loop
+
+        Loop
+    End Sub
+
+End Module
+
+Public Class Hangman
+
+    Private word As String = String.Empty
+    Public Property Text() As String
+        Get
+            Return word
+        End Get
+        Set(ByVal value As String)
+            word = value
+        End Set
+    End Property
+
+    Private guessed As New List(Of String)
+    Public Property GuessedLetters() As List(Of String)
+        Get
+            Return guessed
+        End Get
+        Set(ByVal value As List(Of String))
+            guessed = value
+        End Set
+    End Property
+
+    Private head As Boolean = False
+    Public Property ShowHead() As Boolean
+        Get
+            Return head
+        End Get
+        Set(ByVal value As Boolean)
+            head = value
+        End Set
+    End Property
+
+    Private body As Boolean = False
+    Public Property ShowBody() As Boolean
+        Get
+            Return body
+        End Get
+        Set(ByVal value As Boolean)
+            body = value
+        End Set
+    End Property
+
+    Private lArm As Boolean = False
+    Public Property ShowLeftArm() As Boolean
+        Get
+            Return lArm
+        End Get
+        Set(ByVal value As Boolean)
+            lArm = value
+        End Set
+    End Property
+
+    Private rArm As Boolean = False
+    Public Property ShowRightArm() As Boolean
+        Get
+            Return rArm
+        End Get
+        Set(ByVal value As Boolean)
+            rArm = value
+        End Set
+    End Property
+
+    Private lLeg As Boolean = False
+    Public Property ShowLeftLeg() As Boolean
+        Get
+            Return lLeg
+        End Get
+        Set(ByVal value As Boolean)
+            lLeg = value
+        End Set
+    End Property
+
+    Private rLeg As Boolean = False
+    Public Property ShowRightLeg() As Boolean
+        Get
+            Return rLeg
+        End Get
+        Set(ByVal value As Boolean)
+            rLeg = value
+        End Set
+    End Property
+
+    Public Function Draw() As String ' Modulo de formas del ahorcado, cabeza, brazo, pies, cuerpo.
+        Dim line1 As String = "_____"
+        Dim line2 As String = "|    |"
+        Dim line3 As String
+        Dim line4 As String
+        Dim line5 As String
+        Dim line6 As String = "_"
+
+        If head = True Then
+            line3 = "|    O"
+        Else
+            line3 = "|     "
+        End If
+
+        If body Then
+            If lArm Then
+                If rArm Then
+                    line4 = "|   -|-" ' Modulo de formas del ahorcado, cabeza, brazo, pies, cuerpo.
+                Else
+                    line4 = "|   -|"
+                End If
+            Else
+                line4 = "|    |"
+            End If
+        Else
+            line4 = "|    "
+        End If
+
+        If lLeg Then
+            If rLeg Then
+                line5 = "|   / \"
+            Else
+                line5 = "|   / "
+            End If
+        Else
+            line5 = "|     "
+        End If
+        'Obtiene la cadena de nueva línea definida para este entorno.
+        Return String.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}", Environment.NewLine, line1, line2, line3, line4, line5, line6)
+    End Function
+
+    Public Function GetWord() As String ' Declara el nombre, los parámetros y el código que definen un procedimiento de función.
+        Dim txt As String = word
+
+        For Each l As String In guessed
+            txt = txt.Replace(l, "_")
+        Next
+
+        Dim returnable As String = String.Empty
+        For i As Integer = 0 To word.Length - 1
+            If txt.Substring(i, 1) = "_" Then
+                returnable &= word.Substring(i, 1) & " "
+            Else
+                returnable &= "_ "
+            End If
+        Next
+
+        Return returnable
+    End Function
+
+    Public Sub Strike() 'modulo que selecciona las partes del cuerpo
+        If head = False Then
+            head = True
+        ElseIf body = False Then
+            body = True
+        ElseIf lArm = False Then
+            lArm = True
+        ElseIf rArm = False Then
+            rArm = True
+        ElseIf lLeg = False Then
+            lLeg = True
+        Else
+            rLeg = True
+        End If
+    End Sub
+
+End Class

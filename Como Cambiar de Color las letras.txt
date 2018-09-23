@@ -1,0 +1,20 @@
+Module Module1
+
+    Sub Main()
+        Dim x As String
+        Dim y As String
+
+        Console.ForegroundColor = ConsoleColor.Yellow
+        Console.WriteLine("Ingresa valor de x: programa de cambiar color  ")
+        x = Console.ReadLine()
+        Console.ForegroundColor = ConsoleColor.White
+        Console.WriteLine("Ingresa valor de Y: programa de cambiar color   ")
+        y = Console.ReadLine
+        Console.ForegroundColor = ConsoleColor.Cyan
+        Console.WriteLine("La respuesta correcta es: " & x * y)
+        Console.ForegroundColor = ConsoleColor.Green
+        Console.Write("Hola Mundo")
+        Console.ReadLine()
+    End Sub
+
+End Module

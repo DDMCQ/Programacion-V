@@ -1,0 +1,142 @@
+Imports System.IO
+Imports System.FieldAccessException
+Imports Antivirus1
+Imports System.Nullable
+Imports Microsoft.VisualBasic.FileIO
+
+'//////ANTIVIRUS 1 BASICO SOLICITADO POR EL PROFESOR DE PROGRAMACION V, DONDE DEBEMOS CREAR UNA HERRAMIENTA/////
+'//////PARA LIMPIAR NUESTROS USB DE POSIBLES VIRUS POTENCIALES/////
+
+Module Module1
+    Public Property Listbox1 As Object
+    '/////Esta parte del programa fue la misma utilizada en el taller de calcular tamano de archivos y carpeta/////
+    Sub Main(args As String())
+        Dim Unidad = "e:\" '"E:\" es la unidad USB, en caso tal, se puede cambiar a "D:\" o "F:\" respectivamente
+        Dim files() As System.IO.FileInfo
+        Dim Unidinfo As New System.IO.DirectoryInfo(Unidad)
+        files = Unidinfo.GetFiles("*", IO.SearchOption.AllDirectories)
+        '///este mudulo calcula el tamano de los ficheros////
+        For Each file In files
+            Console.WriteLine(File)
+            Dim size As Long = File.Length
+            Console.WriteLine("Tamaño de Archivo en Bytes: {0}", size)
+
+        Next
+        '////FINALIZA LECTURA DE ARCHIVOS//////
+        '---------------------------------------------------------------------
+        '////INICIA EL BORRADO DE LOS ARCHIVOS CON POSIBLE VIRUS///
+        Console.ForegroundColor = ConsoleColor.Red 'https://social.msdn.microsoft.com/Forums/es-ES/3a00afc2-357c-47ae-8fdf-f9dd6e259fce/cambiar-los-textos-a-color-de-console?forum=vcses
+        Console.WriteLine("Precione Enter escanear su USB y limpiar posibles Virus potenciales:  ")
+        Console.ReadLine()
+
+        '/////en esta pagina encontre la linea que necesitaba////https://social.msdn.microsoft.com/Forums/es-ES/21be0f6e-fc9e-450c-8838-3aa288940b25/eliminar-archivos-de-una-carpeta?forum=vbes
+
+        'For Each fichero As String In Directory.GetFiles("c:\visual", "*.txt") 'linea que utilice de prueba para iniciar las pruebas con *.txt
+        'File.Delete(fichero)
+        'Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.trojan") 'linea que utilice de prueba para iniciar las pruebas con *.trojan
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*trojan*") 'linea que utilice de prueba para iniciar las pruebas con *.trojan
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.fiching") 'linea que utilice de prueba para iniciar las pruebas con *.fiching
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.worm") 'linea que utilice de prueba para iniciar las pruebas con *.worm
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.scr") 'busta, obtiene y borra todos los archivos con extencion .scr
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.bat") 'busta y obtiene todos los archivos con extencion .bat
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.dll") 'busta y obtiene todos los archivos con extencion .dll
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.dem") 'busta y obtiene todos los archivos con extencion .dem
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.exe") 'busta y obtiene todos los archivos con extencion .exe
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.mrc") 'busta y obtiene todos los archivos con extencion .mrc
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.rmc") 'busta y obtiene todos los archivos con extencion .rmc
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.Trashes") 'busta y obtiene todos los archivos con extencion .rmc
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.sys") 'https://es.slideshare.net/ArCiGo/listado-virus-usb busca y obtiene todos los archivos con extencion .sys
+            File.Delete(fichero)
+        Next
+
+        For Each fichero As String In Directory.GetFiles("e:\", "*.ink") 'busta y obtiene todos los archivos con extencion .ink
+            File.Delete(fichero)
+        Next
+
+        Console.ForegroundColor = ConsoleColor.Yellow
+        Console.WriteLine("Su USB ha sido limpiada, tenga cuidado donde utilizarlo: :)")
+        '////notas:  de otras pruebas realizadas que no me funcioinaron, sacas de Microsoft////////
+        '    My.Computer.FileSystem.DeleteFile(("C:\visual\test.txt"),
+        'Microsoft.VisualBasic.FileIO.UIOption.AllDialogs,
+        'Microsoft.VisualBasic.FileIO.RecycleOption.DeletePermanently,
+        'Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing)
+        '    Console.WriteLine("Virus ha sido borrado:  ")
+        '    If False Then
+        '        For Each filename As String In IO.Directory.GetFiles("c:\visual", "*.gif")
+        '            IO.File.Delete(filename)
+        '        Next
+        '        Console.WriteLine("no hay virus:  ")
+        '    End If
+        'End If
+
+        'For Each foundDirectory As String In
+        'My.Computer.FileSystem.GetDirectories(
+        'My.Computer.FileSystem.SpecialDirectories.MyDocuments,
+        '   FileIO.SearchOption.SearchTopLevelOnly,
+        '     "*Logs*")
+
+        '  Listbox1.Items.Add(foundDirectory)
+        '  Next
+
+        '////////nota 2: otras pruebas fallidas//////////
+
+        'Dim Pathname As String = "C:\visual"
+        'For Each FileFound As String In System.IO.Directory.GetFiles(Pathname).Where(Function(fi) System.IO.Path.GetFileName(fi) Like "t*").ToArray
+        '    Console.WriteLine(FileFound)
+        'Next
+        'Console.ReadKey()
+
+        '////////nota 3: otras pruebas fallidas//////////
+
+        ' If Unidad = Nullable Then
+        'Dim virus As String(".worm", ".trojan",".fiching" )
+        ' Extensions = Path.GetExtension(File) Then
+        'For Each (virus In virus)
+        'If Extensions = virus Then
+        'String filename = Path
+        'End If
+        ' End If
+
+        Console.ReadKey(True)
+
+    End Sub
+
+End Module
